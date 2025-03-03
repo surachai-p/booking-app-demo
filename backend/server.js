@@ -223,6 +223,11 @@ app.delete('/api/bookings/:id', authenticateToken, (req, res) => {
 app.get('/test', (req, res) => {
     res.json({ message: 'Test endpoint is working' });
   });
+
+  app.get('/api/login-test', (req, res) => {
+    res.json({ message: 'Login route exists' });
+  });
+  
 // เริ่ม server
 app.listen(port, () => {
     console.log(`Server กำลังทำงานที่ port ${port}`);
