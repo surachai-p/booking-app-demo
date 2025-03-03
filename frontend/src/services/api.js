@@ -6,6 +6,7 @@ const api = axios.create({
   baseURL: API_URL
 });
 
+
 // Add request interceptor to include auth token in headers
 api.interceptors.request.use(
   (config) => {

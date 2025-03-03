@@ -33,6 +33,18 @@ app.use(cors({
     credentials: true
 }));
 
+// อนุญาตการเชื่อมต่อจาก frontend domain
+const corsOptions = {
+    origin: [
+      'http://backend-production-6320.up.railway.app', 
+      'http://localhost:5173' // สำหรับการพัฒนาในเครื่อง
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    credentials: true
+  };
+  app.use(cors(corsOptions));
+
+
 // Middleware
 //app.use(cors());
 app.use(bodyParser.json());
