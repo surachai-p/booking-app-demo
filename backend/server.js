@@ -17,6 +17,7 @@ const port = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // CORS options
+/*
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',') 
     : ['http://localhost:5173'];
@@ -32,8 +33,10 @@ app.use(cors({
     },
     credentials: true
 }));
+*/
 
 // อนุญาตการเชื่อมต่อจาก frontend domain
+/*
 const corsOptions = {
     origin: [
       'http://backend-production-6320.up.railway.app', 
@@ -43,6 +46,24 @@ const corsOptions = {
     credentials: true
   };
   app.use(cors(corsOptions));
+*/
+
+  const allowedOrigins = [
+    'https://frontend-production-84b2.up.railway.app', 
+    'http://localhost:5173'
+  ];
+  
+  app.use(cors({
+    origin: function(origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    credentials: true
+  }));
 
 
 // Middleware
@@ -73,8 +94,7 @@ app.post('/api/login', async (req, res) => {
     console.log(`user:${username} password:${password}`);
     
     try 
-        // ดึงข้อมูลผู้ใช้
-       { db.get('SELECT * FROM users WHERE username = ?', [username], async (err, user) => {
+    { db.get('SELECT * FROM users WHERE username = ?', [username], async (err, user) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
@@ -200,6 +220,9 @@ app.delete('/api/bookings/:id', authenticateToken, (req, res) => {
     });
 });
 
+app.get('/test', (req, res) => {
+    res.json({ message: 'Test endpoint is working' });
+  });
 // เริ่ม server
 app.listen(port, () => {
     console.log(`Server กำลังทำงานที่ port ${port}`);
