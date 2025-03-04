@@ -31,7 +31,7 @@ const BookingList = () => {
   const handleDelete = async (id) => {
     if (window.confirm("คุณต้องการลบข้อมูลการจองนี้ใช่หรือไม่?")) {
       try {
-        await axios.delete(`http://localhost:3001/api/bookings/${id}`, {
+        await axios.delete(`/api/bookings/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         // ดึงข้อมูลใหม่หลังจากลบ
@@ -64,7 +64,7 @@ const BookingList = () => {
         <p className="text-center py-4">ไม่พบข้อมูลการจอง</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {bookings.map((booking) => (
+          {(bookings||[]).map((booking) => (
             <div key={booking.id} className="bg-white p-4 rounded-lg shadow">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold">{booking.fullname}</h3>
