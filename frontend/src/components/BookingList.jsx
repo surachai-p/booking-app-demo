@@ -18,7 +18,22 @@ const BookingList = () => {
         const response = await axios.get("/api/bookings", {
           headers: { Authorization: `Bearer ${token}` }
         });
-      setBookings(response.data);
+     // setBookings(response.data);
+           // Check what we're actually getting from the API
+           console.log("API Response:", response.data);
+      
+           // Make sure we're setting an array to state
+           if (response.data && Array.isArray(response.data)) {
+             setBookings(response.data);
+           } else if (response.data && Array.isArray(response.data.data)) {
+             // Some APIs nest the data in a 'data' property
+             setBookings(response.data.data);
+           } else {
+             // If it's not an array, set an empty array and log the error
+             console.error("API didn't return an array:", response.data);
+             setBookings([]);
+             setError("ข้อมูลที่ได้รับไม่อยู่ในรูปแบบที่ถูกต้อง");
+           }
       setLoading(false);
     } catch (err) {
         console.error("Error details:", err);
