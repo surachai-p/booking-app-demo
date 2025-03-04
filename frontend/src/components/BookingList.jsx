@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 
@@ -9,15 +9,16 @@ const BookingList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { token } = useAuth(); // ดึง token โดยตรงจาก useAuth
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetchBookings();
   }, []);
 
   const fetchBookings = async () => {
     try {
-        const response = await axios.get("/api/bookings", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.get("/api/bookings");
+        
      // setBookings(response.data);
            // Check what we're actually getting from the API
            console.log("API Response:", response.data);
@@ -46,9 +47,7 @@ const BookingList = () => {
   const handleDelete = async (id) => {
     if (window.confirm("คุณต้องการลบข้อมูลการจองนี้ใช่หรือไม่?")) {
       try {
-        await axios.delete(`/api/bookings/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await api.delete(`/api/bookings/${id}`);
         // ดึงข้อมูลใหม่หลังจากลบ
         fetchBookings();
         alert("ลบข้อมูลการจองเรียบร้อยแล้ว");
@@ -79,7 +78,7 @@ const BookingList = () => {
         <p className="text-center py-4">ไม่พบข้อมูลการจอง</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {(bookings||[]).map((booking) => (
+          {bookings.map((booking) => (
             <div key={booking.id} className="bg-white p-4 rounded-lg shadow">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold">{booking.fullname}</h3>
