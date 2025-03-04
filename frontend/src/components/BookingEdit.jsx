@@ -29,13 +29,8 @@ const BookingEdit = () => {
 
   const fetchBooking = async () => {
     try {
-        const response = await axios.get(
-            `/api/bookings/${id}`,
-           
-            {
-              headers: { Authorization: `Bearer ${token}` }
-            }
-          );
+        const response = await api.get(
+            `/api/bookings/${id}`);
 
       // แปลงวันที่ให้อยู่ในรูปแบบที่ input type="date" ใช้ได้
       const booking = response.data;
@@ -52,13 +47,9 @@ const BookingEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `http://localhost:3001/api/bookings/${id}`, 
-        formData,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      await api.put(
+        `/api/bookings/${id}`, 
+        formData);
       alert("บันทึกการเปลี่ยนแปลงเรียบร้อย");
       navigate("/admin/bookings");
     } catch (err) {

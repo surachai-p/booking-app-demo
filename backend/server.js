@@ -65,7 +65,7 @@ const corsOptions = {
     credentials: true
   }));
 
-
+  
 // Middleware
 //app.use(cors());
 app.use(bodyParser.json());
@@ -227,7 +227,7 @@ app.get('/test', (req, res) => {
   app.get('/api/login-test', (req, res) => {
     res.json({ message: 'Login route exists' });
   });
-  
+
 // เริ่ม server
 app.listen(port, () => {
     console.log(`Server กำลังทำงานที่ port ${port}`);
