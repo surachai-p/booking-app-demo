@@ -30,18 +30,34 @@ const handleSubmit = async (e) => {
     e.preventDefault();  // ป้องกันการ refresh หน้า
     setError('');       // ล้างข้อความ error เดิม
     try {
-        // ส่งข้อมูลไปยัง API เพื่อล็อกอิน
-       // const response = await axios.post('http://localhost:3001/api/login', formData);
-        const response = await api.post('/api/login', formData);
-
-        // เก็บข้อมูลผู้ใช้และ token ผ่าน Context
+      console.log('Sending login request to:', `${API_URL}/api/login`);
+      console.log('Login data:', formData);
+      
+      const response = await api.post('/api/login', formData);
+      
+      console.log('Login response:', response.data);
+      
+      // ตรวจสอบว่าการตอบกลับมีข้อมูลที่จำเป็นหรือไม่
+      if (response.data && response.data.token && response.data.user) {
         login(response.data.user, response.data.token);
-
-        // นำทางไปยังหน้า admin
         navigate('/admin');
+      } else {
+        setError('ข้อมูลการตอบกลับไม่ถูกต้อง');
+        console.error('Invalid response format:', response.data);
+      }
     } catch (err) {
-        // จัดการกรณีเกิดข้อผิดพลาด
-        setError(err.response?.data?.error || 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ');
+      console.error('Login error:', err);
+      
+      if (err.response) {
+        // ได้รับการตอบกลับแต่มีข้อผิดพลาด
+        setError(err.response.data?.error || `เกิดข้อผิดพลาด (${err.response.status})`);
+      } else if (err.request) {
+        // ไม่ได้รับการตอบกลับเลย
+        setError('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+      } else {
+        // ข้อผิดพลาดอื่นๆ เช่น network error
+        setError('เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ' + err.message);
+      }
     }
 };
 
