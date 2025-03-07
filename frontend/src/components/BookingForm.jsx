@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 import api from '../services/api';
 const BookingForm = () => {
   const [formData, setFormData] = useState({
@@ -74,7 +74,7 @@ const BookingForm = () => {
       `;
 
       if (window.confirm(summary + "\n\nยืนยันการจองห้องพัก?")) {
-        await axios.post("/api/bookings", formData);
+        await api.post("/api/bookings", formData);
         setSuccess("จองห้องพักเรียบร้อยแล้ว");
         setFormData({
           fullname: "",
