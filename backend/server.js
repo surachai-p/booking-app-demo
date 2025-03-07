@@ -6,7 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const db = require('database');
+const db = require('./database');
 
 const app = express();
 //const port = 3001; // เปลี่ยนเป็น port 3001
