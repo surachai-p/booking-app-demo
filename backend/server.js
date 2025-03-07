@@ -18,7 +18,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 
   const allowedOrigins = [
-    'https://frontend-production-dfb9.up.railway.app/login', 
+    'https://frontend-production-dfb9.up.railway.app', 
     'http://localhost:5173'
   ];
   
