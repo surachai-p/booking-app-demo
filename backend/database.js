@@ -4,14 +4,7 @@ const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(10);
 const adminPassword = bcrypt.hashSync('admin123', salt);
 // สร้างการเชื่อมต่อกับฐานข้อมูล
-const db = new sqlite3.Database('bookings.db', (err) => {
-    if (err) {
-        console.error('เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล:', err);
-    } else {
-        console.log('เชื่อมต่อฐานข้อมูลสำเร็จ');
-        createTables();
-    }
-});
+
 
 // สร้างตารางที่จำเป็น
 const createTables = () => {
@@ -50,5 +43,14 @@ const createTables = () => {
         VALUES ('admin', ?, 'admin')
     `, [adminPassword]);
 };
+
+const db = new sqlite3.Database('bookings.db', (err) => {
+    if (err) {
+        console.error('เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล:', err);
+    } else {
+        console.log('เชื่อมต่อฐานข้อมูลสำเร็จ');
+        createTables();
+    }
+});
 
 module.exports = db;
